@@ -1,0 +1,29 @@
+.grid-columns{
+    
+    @apply grid grid-cols-[80px_1fr_1fr_1fr_1fr_1fr] ;
+}
+
+.grid-height{
+    height: 2rem;
+}
+.bottom-line{
+    border-bottom: 1px #c2c2c2cc solid;
+}
+
+.right-line{
+    border-right: 1px #c2c2c2cc solid;
+
+}
+
+.grid-title{
+    padding: .5rem;
+    text-align: center;
+}
+
+.grid-hour-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+

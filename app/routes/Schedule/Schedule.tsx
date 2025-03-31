@@ -13,6 +13,7 @@ export type Event = {
   endHour: string // in hours
   color: string
   description?: string
+  classroom: string
 }
 
 
@@ -26,8 +27,9 @@ const initialEvents: Event[] = [
     day: 0, // Monday
     startHour: '9:00',
     endHour: '10:00',
-    color: "bg-blue-100 border-blue-300",
+    color: "#a7c957",
     description: "Weekly team sync with department heads",
+    classroom: "7"
   },
   {
     id: "2",
@@ -35,8 +37,9 @@ const initialEvents: Event[] = [
     day: 1, // Tuesday
     startHour: '13:00',
     endHour: '14:00',
-    color: "bg-green-100 border-green-300",
+    color: "#a7c957",
     description: "Review Q1 project milestones and deliverables",
+    classroom: "7"
   },
   {
     id: "3",
@@ -44,8 +47,9 @@ const initialEvents: Event[] = [
     day: 2, // Wednesday
     startHour: '12:00',
     endHour: '13:05',
-    color: "bg-purple-100 border-purple-300",
+    color: "#6a994e",
     description: "Discuss new requirements with the client",
+    classroom: "7"
   },
   {
     id: "4",
@@ -53,8 +57,9 @@ const initialEvents: Event[] = [
     day: 3, // Thursday
     startHour: '15:00',
     endHour: '17:30',
-    color: "bg-yellow-100 border-yellow-300",
+    color: "#a7c957",
     description: "Team lunch at the cafeteria",
+    classroom: "7"
   },
   {
     id: "5",
@@ -62,8 +67,9 @@ const initialEvents: Event[] = [
     day: 4, // Friday
     startHour: '12:00',
     endHour: '13:00',
-    color: "bg-red-100 border-red-300",
+    color: "#6a994e",
     description: "Sprint planning for next week",
+    classroom: "7"
   },
 ]
 
@@ -92,7 +98,7 @@ export default function Schedule() {
   //     </div>
   //   </DndContext>
   // )
-  <div className="rounded-lg border bg-card shadow mx-auto w-4/6 ">
+  <div className="rounded-lg  bg-card  mx-auto max-w-3/6 ">
 
     <ScheduleGrid>
       {events.map((event) => (
