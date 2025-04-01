@@ -1,11 +1,22 @@
 import { type Event } from "../Schedule"
-
+import { useDraggable } from "@dnd-kit/core"
+import { FaGripHorizontal } from "react-icons/fa";
+import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
 interface ScheduleEventProps {
   event: Event
-  isExpanded: boolean
+  isExpanded?: boolean
 }
 
 export default function ScheduleEvent({ event, isExpanded }: ScheduleEventProps) {
+  //Preparamos los atributos a utilizar por el usedraggable
+  const {attributes,listeners,setNodeRef, transform} = useDraggable({
+    id:event.id
+  })
+
+
+  
+
     // Nos divide el tiempo en string
     const getTimeInfo=(time:string)=>{
 
@@ -29,7 +40,7 @@ export default function ScheduleEvent({ event, isExpanded }: ScheduleEventProps)
     const getDuration= ()=>{
       
       var duration = (getNumberTime(event.endHour)-getNumberTime(event.startHour))
-      console.log(duration)
+      // console.log(duration)
 
       if(duration%1==0.5){
 
@@ -45,12 +56,11 @@ export default function ScheduleEvent({ event, isExpanded }: ScheduleEventProps)
 
     //el siguiente objeto viene de cssProperties de React, permite hacer calculos complicados y dinamicos de css que dependen de una variable
     const style = {
-
+      transform: `translate3d(${transform?.x}px, ${transform?.y}px, 0)`,
       top: `${((getNumberTime(event.startHour)-8)*2) * cellHeight}px`, // 8 is the starting hour
       left: `${event.day * cellWidth}%`, // Posicion desde la izquierda para ubicarlo por dia
       height: `${getDuration()}px`, // Altura basada en la hora
-      width: `${cellWidth}%`, // Ancho de la columna de un dia
-    
+      width: `${cellWidth}%`, // Ancho de la columna de un dia,
       backgroundColor: `${event.color}`,
       color: "#FFF"
 
@@ -70,8 +80,10 @@ export default function ScheduleEvent({ event, isExpanded }: ScheduleEventProps)
     return (
 
       <div
+        ref={setNodeRef}
         style={style}
         className="absolute z-10 flex flex-col rounded-md p-2 shadow-sm transition-all pointer-events-auto"
+
       >
 
 
@@ -80,8 +92,16 @@ export default function ScheduleEvent({ event, isExpanded }: ScheduleEventProps)
 
           <h3 className="font-medium text-sm truncate">{event.title}</h3>
           <div className="flex items-center gap-1 shrink-0">
-          
-          </div>
+          <button
+            className="h-5 w-5 cursor-crosshair active:cursor-crosshair"
+            {...attributes}
+            {...listeners}
+            aria-label="Drag event"
+          >
+            {/* <GripVertical className="h-3 w-3" /> */}
+            <FaGripHorizontal className="h-3 w-3 text-black hover:text-neutral-600"/>
+          </button>
+        </div>
         </div>
         
         <div className="text-xs text-muted-foreground">

@@ -1,16 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type DragEventHandler } from "react"
 import { ScheduleGrid } from "./ScheduleGrid/ScheduleGrid"
 import ScheduleEvent from "./ScheduleGrid/ScheduleEvent"
-// import { ScheduleEvent } from "./ScheduleEvent"
+import {DndContext, DragOverlay, type DragStartEvent, type DragEndEvent} from '@dnd-kit/core'
 
 export type Event = {
   id: string
   title: string //titulo del evento
   day: number // 0-4 de lunes a viernes
-  startHour: string // 0-23
-  endHour: string // in hours
+  startHour: string // hora donde inicia el intervalo
+  endHour: string // hora donde termina el intervalo
+  //Las horas mas bien deberian venir en un arreglo donde se vean las horas disponibles del profesor
   color: string
   description?: string
   classroom: string
@@ -74,42 +75,90 @@ const initialEvents: Event[] = [
 ]
 
 export default function Schedule() {
-  // creamos un arreglo de objetos de eventos y un actualizador
   const [events, setEvents] = useState<Event[]>(initialEvents)
 
+  //Preparamos las variables con las que manejaremos los eventos de arrastre
+  const [activeId,setActiveId] = useState<string|null>(null)
+
+  //variables para manejar el muestreo de informacion
   const [expandedEventId, setExpandedEventId] = useState<string | null>(null)
 
+  const [activeEvent, setActiveEvent] = useState<Event | null>(null)
 
 
+
+  function handleDragStart(event:DragStartEvent) {
+    console.log('arrastre')
+    const event_id = event.active.id as string
+    setActiveId(event_id)
+
+    const draggedEvent = events.find((evt)=>evt.id ===event_id) || null
+    setActiveEvent(draggedEvent)
+  }
+  
+  function handleDragEnd(event: DragEndEvent) {
+    const {active,over} = event
+    setActiveId(null);
+    setActiveEvent(null)
+
+    if (!over) return
+
+    const eventId = active.id as string
+    const cellId = over.id as string
+
+    // Parse the day and hour from the cell ID
+    const [day, hour] = cellId.split("-").map(Number)
+
+    // Make sure we have valid values
+    if (isNaN(day) || isNaN(hour) || day < 0 || day > 4 || hour < 8 || hour > 19) {
+      return
+    }
+
+
+
+    // setEvents((prevEvents) => {
+    //   return prevEvents.map((evt) => {
+    //     if (evt.id === eventId) {
+    //       // Update the day and start hour based on where it was dropped
+    //       return {
+    //         ...evt,
+    //         day,
+    //         startHour: hour,
+    //       }
+    //     }
+    //     return evt
+    //   })
+    // })
+
+
+
+  }
 
   return (
-  //   <DndContext sensors={sensors} onDragEnd={handleDragEnd} modifiers={[restrictToVerticalAxis]}>
-  //     <div className="rounded-lg border bg-card shadow">
-  //       <ScheduleGrid>
-  //         {events.map((event) => (
-  //           <ScheduleEvent
-  //             key={event.id}
-  //             event={event}
-  //             isExpanded={expandedEventId === event.id}
-  //             onClick={() => handleEventClick(event.id)}
-  //           />
-  //         ))}
-  //       </ScheduleGrid>
-  //     </div>
-  //   </DndContext>
-  // )
-  <div className="rounded-lg  bg-card  mx-auto max-w-3/6 ">
+  //Aqui creamos el contexto de dnd para hacer los eventos arrastrables
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} >
+        
+      <div className="rounded-lg  bg-card  mx-auto max-w-3/6 " >
 
-    <ScheduleGrid>
-      {events.map((event) => (
-        <ScheduleEvent
-          key={event.id}
-          event={event}
-          isExpanded={expandedEventId === event.id}
-        />
-      ))}
-    </ScheduleGrid> 
-  </div>
+        <ScheduleGrid>
+          {events.map((event) => (
+            
+            //para cada evento en nuestro arreglo, reperimos un schedule event
+              <ScheduleEvent 
+                key={event.id}
+                event={event}
+                isExpanded={expandedEventId === event.id}
+              />
+          ))}
+
+        </ScheduleGrid> 
+        {/* <DragOverlay adjustScale style={{ transformOrigin: '4 4' }}>
+                {activeEvent ? <ScheduleEvent key={activeEvent.id} event={activeEvent} /> : null}
+        </DragOverlay> */}
+      </div>
+    </DndContext>
+
+
   )
 }
 
