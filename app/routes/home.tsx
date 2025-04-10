@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
 import Schedule from "~/routes/Schedule/Schedule";
-import { Layout } from "~/root";
 
 export function meta({}: Route.MetaArgs) {
   return [

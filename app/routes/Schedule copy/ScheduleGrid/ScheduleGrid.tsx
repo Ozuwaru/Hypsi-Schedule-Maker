@@ -3,8 +3,38 @@ import './ScheduleGrid.css'
 import DroppableCell from "./DroppableCell"
 //Dias de la semana de clases
 const days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
-const hours = Array.from({ length: 20 }, (v, i) => i*0.5 + 8) 
+//preparamos una lista de las horas laborales
+function getHoursString(){
+  var hours = Array.from({ length: 20 }, (v, i) => i*0.5 + 8 ) 
+  var hours_string: string[]= []
+  hours.forEach(hour=>{
+    var minutes = ':00'
+    if(hour%1!==0){
+      hour-=0.5
+      minutes= ':30'
+    }
+    // hours_string.push(`${hour%1!== 0 ? hour-0.5 : hour }:${hour%1!==0 ? '30' : '00'} `)
+    hours_string.push(`${hour}${minutes}`)
+    
+  })
 
+  return hours_string
+}
+const hours = getHoursString()
+
+
+function getHourColumnString(hour:string){
+  var hour_n= Number(hour.split(':')[0])
+  var minutes_n= hour.split(':')[1]
+
+
+  if(hour_n>12){
+    hour_n-=12
+  }
+  return `${hour_n}:${minutes_n} ${hour_n >= 12 ? "PM" : "AM"}`
+
+
+}
 
 // export function ScheduleGrid() {
 export function ScheduleGrid({ children }: { children: ReactNode }) {
@@ -44,7 +74,8 @@ return (
               key={hour}
               className="grid-hour-row grid-height right-line bottom-line">
               {/* Si tiene decimal significa que es la media hora seguiente, por lo tanto colocamos 30 minutos */}
-              {hour%1!== 0 ? hour-0.5 : hour }:{hour%1!==0 ? '30' : '00'} {hour >= 12 ? "PM" : "AM"}
+              {/* {Number(hour.split(':')[0])>12 ? `${Number(hour.split(':')[0])-12}:${hour.split(':')[1]} `: `${hour} `}{ Number(hour.split(':')[0]) >= 12 ? "PM" : "AM"} */}
+              {getHourColumnString(hour)}
             </div>
 
           ))}

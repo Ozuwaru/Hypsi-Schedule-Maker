@@ -3,7 +3,7 @@ import { useDroppable } from '@dnd-kit/core'
 interface DroppableProps{
   
   day:number,
-  hour:number
+  hour:string
 }
 const DroppableCell = ({day,hour}:DroppableProps) => {
     const {setNodeRef}= useDroppable({
