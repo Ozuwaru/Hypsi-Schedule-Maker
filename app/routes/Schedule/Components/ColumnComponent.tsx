@@ -43,7 +43,7 @@ const ColumnComponent = (props: Props) => {
   return (
     <div ref={setNodeRef} style={style} className='column-day '>
         {/*COLUMN TITLE  */}
-        <div {...attributes} {...listeners} className="column-title-row">
+        <div  className="column-title-row">
 
           <div className="flex gap-2">
 

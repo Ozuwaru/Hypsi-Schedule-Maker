@@ -8,6 +8,7 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type Dra
 import {arrayMove, SortableContext} from '@dnd-kit/sortable'
 import type { Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
+import HourColumn from './Components/HourColumn'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
@@ -107,13 +108,8 @@ const Schedule = () => {
 
         <div className="center flex gap-2">
           <div className='flex rounded-l-lg'>
-            <div className='hour-col '>
-              <div className="column-title-row">
-
-                Horas
-              </div>
-
-            </div>
+            
+            <HourColumn/>
             <SortableContext items={columnsId}>
 
               {columns.map(col=>

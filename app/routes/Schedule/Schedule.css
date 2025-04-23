@@ -27,7 +27,7 @@
 }
 
 .column-title-row{
-  @apply flex items-center border-gray-500  border-b-1 w-full justify-around  h-[40px] cursor-grab rounded-md rounded-b-none font-bold ;
+  @apply flex items-center border-gray-500  border-b-1 w-full justify-around  h-[40px] rounded-md rounded-b-none font-bold ;
 }
 
 .add-class-btn{
@@ -35,8 +35,11 @@
 }
 
 
+.cell-box{
+  @apply min-h-[32px] ;
+}
 .class-box{
-  @apply min-h-[32px] bg-green-600 font-bold text-white md:text-sm p-2 text-left rounded-md  hover:ring-2 hover:ring-inset hover:cursor-grab hover:ring-emerald-700 transition relative;
+  @apply bg-green-600 font-bold text-white md:text-sm p-2 text-left rounded-sm  hover:ring-2 hover:ring-inset hover:cursor-grab hover:ring-emerald-700 transition relative;
 }
 
 .class-delete-btn{
