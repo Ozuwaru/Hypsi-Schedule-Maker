@@ -14,8 +14,11 @@ interface Props{
     classes : Class[];
 }
 
+
 const ColumnComponent = (props: Props) => {
   const {column,classes,deleteClass,updateClass} = props
+  
+
   const {setNodeRef,attributes,listeners,transform,transition,isDragging} =useSortable({
     id: column.id,
     data:{
@@ -39,6 +42,7 @@ const ColumnComponent = (props: Props) => {
   const classesIds =useMemo(()=>{
     return classes.map((c)=>c.id)
   },[classes])
+  console.log(classes)
 
   return (
     <div ref={setNodeRef} style={style} className='column-day '>
@@ -55,10 +59,12 @@ const ColumnComponent = (props: Props) => {
         {/* task container */}
         <div className= 'w-full flex flex-col flex-grow  p-3 overflow-x-hidden overflow-y-auto'>
           <SortableContext items={classesIds}>
-
+            <div className=""></div>
             {classes.map(c=>(
               <div key={column.id+"-"+c.id} className="">
-                <ClassComponent deleteClass={deleteClass} updateClass={updateClass} key={c.id} c={c}/>
+                
+                  <ClassComponent deleteClass={deleteClass} updateClass={updateClass} key={c.id} c={c}/>
+                
               </div>
             ))}
           </SortableContext>

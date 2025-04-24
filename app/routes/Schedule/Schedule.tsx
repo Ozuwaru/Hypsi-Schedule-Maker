@@ -1,5 +1,5 @@
 import './Schedule.css'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {createPortal} from 'react-dom'
 // import { MdAddBox } from 'react-icons/md'
 import type { Column } from './types/Column'
@@ -12,58 +12,55 @@ import HourColumn from './Components/HourColumn'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
-    {
-      id: "0",
-      title: "Team Meeting",
-      day: 0, // Monday
-      startHour: '9:00',
-      endHour: '10:00',
-      color: "#a7c957",
-      description: "Weekly team sync with department heads",
-      classroom: "7"
-    },
-    {
-      id: "2",
-      title: "Project Review",
-      day: 0, // Tuesday
-      startHour: '13:00',
-      endHour: '14:00',
-      color: "#a7c957",
-      description: "Review Q1 project milestones and deliverables",
-      classroom: "7"
-    },
-    {
-      id: "3",
-      title: "Client Call",
-      day: 1, // Wednesday
-      startHour: '12:00',
-      endHour: '13:05',
-      color: "#6a994e",
-      description: "Discuss new requirements with the client",
-      classroom: "7"
-    },
-    {
-      id: "4",
-      title: "Lunch Break",
-      day: 2, // Thursday
-      startHour: '15:00',
-      endHour: '17:30',
-      color: "#a7c957",
-      description: "Team lunch at the cafeteria",
-      classroom: "7"
-    },
-    {
-      id: "5",
-      title: "Planning",
-      day: 3, // Friday
-      startHour: '12:00',
-      endHour: '13:00',
-      color: "#6a994e",
-      description: "Sprint planning for next week",
-      classroom: "7"
-    },
-  ])
+    // {
+    //   id: "0",
+    //   title: "Team Meeting"
+    //   day: 0, // Monday
+    //   duration:1,
+    //   color: "#a7c957",
+    //   description: "Weekly team sync with department heads",
+    //   classroom: "7"
+    // },
+    // {
+    //   id: "2",
+    //   title: "Project Review",
+    //   day: 0, // Tuesday
+    //   duration:1,
+    //   color: "#a7c957",
+    //   description: "Review Q1 project milestones and deliverables",
+    //   classroom: "7"
+    // },
+    // {
+    //   id: "3",
+    //   title: "Client Call",
+    //   day: 1, // Wednesday
+    //   duration:1,
+    //   color: "#6a994e",
+    //   description: "Discuss new requirements with the client",
+    //   classroom: "7"
+    // },
+    // {
+    //   id: "4",
+    //   title: "Lunch Break",
+    //   day: 2, // Thursday
+    //   duration:2,
 
+    //   color: "#a7c957",
+    //   description: "Team lunch at the cafeteria",
+    //   classroom: "7"
+    // },
+    // {
+    //   id: "5",
+    //   title: "Planning",
+    //   day: 3, // Friday
+    //   duration:1,
+
+    //   color: "#6a994e",
+    //   description: "Sprint planning for next week",
+    //   classroom: "7"
+    // }
+  ])
+  
   const [columns,setColums] = useState<Column[]>([
     {
       id:0,
@@ -86,6 +83,13 @@ const Schedule = () => {
       title: 'Viernes'
     },
   ])
+
+  
+
+
+
+  // console.log(classes)
+
   //similar al use effect, actualiza el valor del arreglo segun el valor deñ arreglo columnas
   const columnsId = useMemo(()=>columns.map(col=>col.id),[columns]);
   
@@ -100,6 +104,29 @@ const Schedule = () => {
       }
     )
   )
+
+  useEffect(() => {
+    let defaultArr = classes;
+   
+    for(let j=0;j<columns.length;j++){
+      for(let i=0; i<19;i++){
+          let defaultC: Class = {
+            id: i,
+            title: 'test'+i+'-'+j,
+            day: j,
+            duration: 1,
+            classroom: '3T1',
+            isDefault:true
+          }
+          // defaultC.id=i;
+          // defaultC.day=j;
+          defaultArr.push(defaultC);
+      }
+    }
+    setClasses(defaultArr);
+  }, [classes]); // Dependency array ensures controlled update
+  // console.log(classes)
+
   return (
     //this div will be our main box
     <div className="main-schedule-div">

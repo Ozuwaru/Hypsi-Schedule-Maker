@@ -1,9 +1,8 @@
-import React from 'react'
 import '../Schedule.css'
 const HourColumn = () => {
 
     function getHoursString(){
-      var hours = Array.from({ length: 20 }, (v, i) => i*0.5 + 8 ) 
+      var hours = Array.from({ length: 19 }, (v, i) => i*0.5 + 8 ) 
       var hours_string: string[]= []
       hours.forEach(hour=>{
         var minutes = ':00'
@@ -46,10 +45,11 @@ const HourColumn = () => {
             Horas
         </div>
 
-        <div className='cell-box'>
-            8:00AM
-             
-        </div>
+        {hours.map((hour)=>(
+          <div className="cell-box ">
+            {getHourColumnString(hour)}
+          </div>
+        ))}
     </div>
   )
 }

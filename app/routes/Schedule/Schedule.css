@@ -19,7 +19,7 @@
 
 /* ESTILOS COLUMNAS: */
 .hour-col{
-  @apply h-[640px] w-[80px] text-center  border border-gray-500 rounded-l-lg ;
+  @apply min-h-[640px] w-[80px] text-center  border border-gray-500 rounded-l-lg ;
 }
 
 .column-day{
@@ -34,12 +34,11 @@
   @apply flex gap-2 hover:cursor-pointer items-center p-3 bg-amber-200 hover:text-emerald-700 hover:bg-emerald-300 active:bg-black;
 }
 
-
 .cell-box{
-  @apply min-h-[32px] ;
+  @apply min-h-[32px]  border-gray-500  border-b-1 ;
 }
 .class-box{
-  @apply bg-green-600 font-bold text-white md:text-sm p-2 text-left rounded-sm  hover:ring-2 hover:ring-inset hover:cursor-grab hover:ring-emerald-700 transition relative;
+  @apply border-none py-1 bg-green-600 font-bold px-2 text-white md:text-sm  text-left rounded-sm  hover:ring-2 hover:ring-inset hover:cursor-grab hover:ring-emerald-700 transition relative;
 }
 
 .class-delete-btn{

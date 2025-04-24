@@ -1,7 +1,7 @@
 
 
 export type Column = {
-    id: string | number;
+    id:   number;
     title: String;
 
 }
