@@ -46,7 +46,7 @@ const HourColumn = () => {
         </div>
 
         {hours.map((hour)=>(
-          <div className="cell-box ">
+          <div className="cell-box " key={'hour'+hour.split(':'[0])}>
             {getHourColumnString(hour)}
           </div>
         ))}

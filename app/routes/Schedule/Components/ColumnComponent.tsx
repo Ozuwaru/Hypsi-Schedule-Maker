@@ -42,7 +42,6 @@ const ColumnComponent = (props: Props) => {
   const classesIds =useMemo(()=>{
     return classes.map((c)=>c.id)
   },[classes])
-  console.log(classes)
 
   return (
     <div ref={setNodeRef} style={style} className='column-day '>

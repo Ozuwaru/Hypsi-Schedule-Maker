@@ -84,8 +84,27 @@ const Schedule = () => {
     },
   ])
 
-  
+  function setDefaultClasses(){
+    if(classes.length==0){  let defaultArr = classes;
 
+      for(let j=0;j<columns.length;j++){
+        for(let i=0; i<19;i++){
+            let defaultC: Class = {
+              id: i,
+              title: 'test'+i+'-'+j,
+              day: j,
+              duration: 1,
+              classroom: '3T1',
+              isDefault:true
+            }
+            // defaultC.id=i;
+            // defaultC.day=j;
+            defaultArr.push(defaultC);
+        }
+      }
+      setClasses(defaultArr);}
+  }
+  setDefaultClasses()
 
 
   // console.log(classes)
@@ -105,27 +124,7 @@ const Schedule = () => {
     )
   )
 
-  useEffect(() => {
-    let defaultArr = classes;
-   
-    for(let j=0;j<columns.length;j++){
-      for(let i=0; i<19;i++){
-          let defaultC: Class = {
-            id: i,
-            title: 'test'+i+'-'+j,
-            day: j,
-            duration: 1,
-            classroom: '3T1',
-            isDefault:true
-          }
-          // defaultC.id=i;
-          // defaultC.day=j;
-          defaultArr.push(defaultC);
-      }
-    }
-    setClasses(defaultArr);
-  }, [classes]); // Dependency array ensures controlled update
-  // console.log(classes)
+  
 
   return (
     //this div will be our main box
@@ -161,10 +160,6 @@ const Schedule = () => {
     console.log("Drag start", event)
     
     //verificamos que al arrastrar, el tipo de dato sea la columna
-    if (event.active.data.current?.type =="Column" ){
-      setActiveColumn(event.active.data.current.column)
-      return;
-    }
     if (event.active.data.current?.type =="Class" ){
       setActiveClass(event.active.data.current.c)
       return;
