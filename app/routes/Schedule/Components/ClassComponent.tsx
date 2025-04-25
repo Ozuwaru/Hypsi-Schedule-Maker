@@ -31,8 +31,7 @@ const ClassComponent = ({c,deleteClass,updateClass} : Props) => {
     const style= {
         transition,
         transform: CSS.Transform.toString(transform),
-        outerHeight: (c.duration*32),
-        height: `${c.duration*32}px`, // Altura basada en la hora
+        'height': `${c.duration*32}px`, // Altura basada en la hora
 
       }
     

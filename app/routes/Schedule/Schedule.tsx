@@ -115,7 +115,7 @@ const Schedule = () => {
     //aqui vamos a cargar las clases de la semana actual desde el server, por ahora carga las ficticias
     let fakeClasses:Class[] = [
       {
-        title: "Team Meeting",
+        title: "Matematica",
         startHour: 8,
         day: 0, // Monday
         duration:1,
@@ -124,7 +124,7 @@ const Schedule = () => {
         classroom: "7"
       },
       {
-        title: "Project Review",
+        title: "Programacion III",
         day: 0, // Tuesday
         startHour: 8,
         duration:4,
@@ -133,7 +133,7 @@ const Schedule = () => {
         classroom: "7"
       },
       {
-        title: "Client Call",
+        title: "Investigacion de Operaciones",
         day: 1, // Wednesday
         startHour: 8,
 
@@ -143,7 +143,7 @@ const Schedule = () => {
         classroom: "7"
       },
       {
-        title: "Lunch Break",
+        title: "Ingenieria de software",
         day: 2, // Thursday
         startHour: 8,
 
@@ -153,14 +153,32 @@ const Schedule = () => {
         classroom: "7"
       },
       {
-        title: "Planning",
+        title: "Bases de datos",
         startHour: 10.5,
         day: 3, // F
         duration:3,
         color: "#6a994e",
         description: "Sprint planning for next week",
         classroom: "7"
-      }
+      },
+      {
+        title: "Bases de datos",
+        startHour: 10.5,
+        day: 2, // F
+        duration:5,
+        color: "#6a994e",
+        description: "Sprint planning for next week",
+        classroom: "7"
+      },
+      {
+        title: "Seminario",
+        startHour: 13.5,
+        day: 1, // F
+        duration:5,
+        color: "#6a994e",
+        description: "Sprint planning for next week",
+        classroom: "7"
+      },
     ]
     //guardamos la respectiva id segun la hora
     fakeClasses.forEach(c => {

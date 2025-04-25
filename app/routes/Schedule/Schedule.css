@@ -42,8 +42,8 @@
 }
 
 .class-delete-btn{
-  @apply stroke-white absolute hover:cursor-pointer right-1 top-4 -translate-y-1/2 p-2 opacity-60 hover:opacity-100 ;
+  @apply stroke-white absolute hover:cursor-pointer right-1 top-4 -translate-y-4 p-2 opacity-60 hover:opacity-100 ;
 }
 .class-edit-btn{
-  @apply stroke-white absolute hover:cursor-pointer right-6 top-4 -translate-y-1/2 p-2 opacity-60 hover:opacity-100;
+  @apply stroke-white absolute hover:cursor-pointer right-6 top-4 -translate-y-4 p-2 opacity-60 hover:opacity-100;
 }
