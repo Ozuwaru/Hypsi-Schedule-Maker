@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+
+.center{
+    @apply mx-auto;
+  }
+  
+.main-schedule-div{
+    @apply m-auto flex  min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px];
+}
+  
+.add-event-button{
+  /* @apply h-[60px] w-[150px] min-w-[150px] cursor-pointer rounded-lg bg-green-600 hover:ring-2; */
+  @apply h-[60px] w-[150px] min-w-[150px] cursor-pointer;
+  border-radius: 8px;
+  background-color: rgb(128, 201, 18);
+}
+ 
+
+/* ESTILOS COLUMNAS: */
+.hour-col{
+  @apply min-h-[640px] w-[80px] text-center  border border-gray-500 rounded-l-lg ;
+}
+
+.column-day{
+  @apply text-center  items-center sm:w-[100px] max-md:text-[0.6rem] md:w-[155px] lg:w-[200px]  flex flex-col  border-gray-500 border-t border-b last:rounded-r-lg border-r;
+}
+
+.column-title-row{
+  @apply flex items-center border-gray-500  border-b-1 w-full justify-around  h-[40px] rounded-md rounded-b-none font-bold ;
+}
+
+.add-class-btn{
+  @apply flex gap-2 hover:cursor-pointer items-center p-3 bg-amber-200 hover:text-emerald-700 hover:bg-emerald-300 active:bg-black;
+}
+
+.cell-box{
+  @apply min-h-[32px]  border-gray-500  border-b-1 ;
+}
+.class-box{
+  @apply border-none py-1 bg-green-600 font-bold px-2 text-white md:text-sm  text-left rounded-sm  hover:ring-2 hover:ring-inset hover:cursor-grab hover:ring-emerald-700 transition relative;
+}
+
+.class-delete-btn{
+  @apply stroke-white absolute hover:cursor-pointer right-1 top-4 -translate-y-4 p-2 opacity-60 hover:opacity-100 ;
+}
+.class-edit-btn{
+  @apply stroke-white absolute hover:cursor-pointer right-6 top-4 -translate-y-4 p-2 opacity-60 hover:opacity-100;
+}
