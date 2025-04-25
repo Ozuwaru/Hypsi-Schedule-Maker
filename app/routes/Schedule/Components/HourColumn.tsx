@@ -25,10 +25,8 @@ const HourColumn = () => {
     var minutes_n= hour.split(':')[1]
   
   
-    if(hour_n>12){
-      hour_n-=12
-    }
-    return `${hour_n}:${minutes_n} ${hour_n >= 12 ? "PM" : "AM"}`
+
+    return `${hour_n>12? hour_n-12 : hour_n}:${minutes_n} ${hour_n >= 12 ? "PM" : "AM"}`
   }
   return (
     <div className='hour-col'>
