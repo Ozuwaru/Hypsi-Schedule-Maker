@@ -31,6 +31,9 @@ const ClassComponent = ({c,deleteClass,updateClass} : Props) => {
     const style= {
         transition,
         transform: CSS.Transform.toString(transform),
+        outerHeight: (c.duration*32),
+        height: `${c.duration*32}px`, // Altura basada en la hora
+
       }
     
   const toggleEditMode = ()=>{
@@ -62,12 +65,14 @@ const ClassComponent = ({c,deleteClass,updateClass} : Props) => {
   }
   
   return (
-    <div className='cell-box class-box' ref={setNodeRef} style={style} {...attributes} {...listeners} onMouseEnter={()=>setMouseOver(true)} onMouseLeave={()=>setMouseOver(false)}>
 
-      {c.title} 
-      {mouseOver && (<button className='class-edit-btn' onClick={toggleEditMode}>< FaEdit className='text-lg'/></button>)  }
+    
+    <div className={`cell-box  ${c.isDefault!= true ? 'class-box':''}`} ref={setNodeRef} style={style}{...(c.isDefault!= true ? { ...attributes, ...listeners } : {})}onMouseEnter={()=>setMouseOver(true)} onMouseLeave={()=>setMouseOver(false)}>
 
-      {mouseOver && (<button className='class-delete-btn' onClick={()=>deleteClass(c.id)}><MdDeleteForever className='text-xl'/></button>)  }
+      {c.isDefault!= true? c.title:null} 
+      {c.isDefault!= true ? mouseOver && (<button className='class-edit-btn' onClick={toggleEditMode}>< FaEdit className='text-lg'/></button>) :null }
+
+      {c.isDefault!= true ?mouseOver && (<button className='class-delete-btn' onClick={()=>deleteClass(c.id)}><MdDeleteForever className='text-xl'/></button>):null  }
     </div>
   )
 }

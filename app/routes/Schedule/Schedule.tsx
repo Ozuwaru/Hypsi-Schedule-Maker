@@ -6,7 +6,7 @@ import type { Column } from './types/Column'
 import ColumnComponent from './Components/ColumnComponent'
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragOverEvent, type DragStartEvent } from '@dnd-kit/core'
 import {arrayMove, SortableContext} from '@dnd-kit/sortable'
-import type { Class } from './types/Class'
+import { updateId, type Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
 import HourColumn from './Components/HourColumn'
 const Schedule = () => {
@@ -85,12 +85,13 @@ const Schedule = () => {
   ])
 
   function setDefaultClasses(){
-    if(classes.length==0){  let defaultArr = classes;
-
+    if(classes.length==0){  
+      let defaultArr = classes;
+      // por cada semana, agregamos 19 filas que son las horas disponibles de ese dia
       for(let j=0;j<columns.length;j++){
         for(let i=0; i<19;i++){
             let defaultC: Class = {
-              id: i,
+              id: j+'-'+i,
               title: 'test'+i+'-'+j,
               day: j,
               duration: 1,
@@ -102,12 +103,83 @@ const Schedule = () => {
             defaultArr.push(defaultC);
         }
       }
-      setClasses(defaultArr);}
+      setClasses(defaultArr);
+      loadRealSchedule();
+    }
   }
   setDefaultClasses()
 
 
-  // console.log(classes)
+
+  function loadRealSchedule(){
+    //aqui vamos a cargar las clases de la semana actual desde el server, por ahora carga las ficticias
+    let fakeClasses:Class[] = [
+      {
+        title: "Team Meeting",
+        startHour: 8,
+        day: 0, // Monday
+        duration:1,
+        color: "#a7c957",
+        description: "Weekly team sync with department heads",
+        classroom: "7"
+      },
+      {
+        title: "Project Review",
+        day: 0, // Tuesday
+        startHour: 8,
+        duration:4,
+        color: "#a7c957",
+        description: "Review Q1 project milestones and deliverables",
+        classroom: "7"
+      },
+      {
+        title: "Client Call",
+        day: 1, // Wednesday
+        startHour: 8,
+
+        duration:1,
+        color: "#6a994e",
+        description: "Discuss new requirements with the client",
+        classroom: "7"
+      },
+      {
+        title: "Lunch Break",
+        day: 2, // Thursday
+        startHour: 8,
+
+        duration:2,
+        color: "#a7c957",
+        description: "Team lunch at the cafeteria",
+        classroom: "7"
+      },
+      {
+        title: "Planning",
+        startHour: 10.5,
+        day: 3, // F
+        duration:3,
+        color: "#6a994e",
+        description: "Sprint planning for next week",
+        classroom: "7"
+      }
+    ]
+    //guardamos la respectiva id segun la hora
+    fakeClasses.forEach(c => {
+      c.id = c.day+'-'+updateId(c);
+      setClasses((prevoiusC)=>
+        prevoiusC.map((clase)=>
+          clase.id === c.id ? c : clase//remplazamos el objeto por el nuevo si tienen el mismo id
+        ).concat(prevoiusC.every((item)=>item.id !== c.id)? [c] : [])
+        // const classesActualizadas = prevoiusC.filter((clase)=>clase.id != c.id);
+        // return [...classesActualizadas,c];
+      )
+    });
+    
+
+
+
+    console.log(classes)
+  }
+
 
   //similar al use effect, actualiza el valor del arreglo segun el valor deñ arreglo columnas
   const columnsId = useMemo(()=>columns.map(col=>col.id),[columns]);
@@ -157,13 +229,13 @@ const Schedule = () => {
   )
 
   function OnDragStart(event:DragStartEvent){
-    console.log("Drag start", event)
     
     //verificamos que al arrastrar, el tipo de dato sea la columna
     if (event.active.data.current?.type =="Class" ){
       setActiveClass(event.active.data.current.c)
       return;
     }
+    console.log("Drag start", event)
   }
 
   function OnDragEnd(event:DragEndEvent){

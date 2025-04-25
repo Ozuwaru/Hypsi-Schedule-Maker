@@ -60,8 +60,9 @@ const ColumnComponent = (props: Props) => {
           <SortableContext items={classesIds}>
             <div className=""></div>
             {classes.map(c=>(
+              
               <div key={column.id+"-"+c.id} className="">
-                
+                  
                   <ClassComponent deleteClass={deleteClass} updateClass={updateClass} key={c.id} c={c}/>
                 
               </div>
