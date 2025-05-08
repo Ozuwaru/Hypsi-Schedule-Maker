@@ -115,7 +115,7 @@ const Schedule = () => {
     //aqui vamos a cargar las clases de la semana actual desde el server, por ahora carga las ficticias
     let fakeClasses:Class[] = [
       {
-        title: "Team Meeting",
+        title: "Matematica",
         startHour: 8,
         day: 0, // Monday
         duration:1,
@@ -123,27 +123,28 @@ const Schedule = () => {
         description: "Weekly team sync with department heads",
         classroom: "7"
       },
-      {
-        title: "Project Review",
-        day: 0, // Tuesday
-        startHour: 8,
-        duration:4,
-        color: "#a7c957",
-        description: "Review Q1 project milestones and deliverables",
-        classroom: "7"
-      },
-      {
-        title: "Client Call",
+      
+       {
+         title: "Programacion III",
+         day: 0, // Tuesday
+         startHour: 9,
+         duration:4,
+         color: "#a7c957",
+         description: "Review Q1 project milestones and deliverables",
+         classroom: "7"
+       },
+       {
+        title: "Investigacion de Operaciones",
         day: 1, // Wednesday
         startHour: 8,
 
-        duration:1,
+        duration:3,
         color: "#6a994e",
         description: "Discuss new requirements with the client",
         classroom: "7"
       },
       {
-        title: "Lunch Break",
+        title: "Ingenieria de software",
         day: 2, // Thursday
         startHour: 8,
 
@@ -153,9 +154,17 @@ const Schedule = () => {
         classroom: "7"
       },
       {
-        title: "Planning",
+        title: "Bases de datos",
         startHour: 10.5,
         day: 3, // F
+        duration:3,
+        color: "#6a994e",
+        description: "Sprint planning for next week",
+        classroom: "7"
+      },{
+        title: "Seminario",
+        startHour: 13.5,
+        day: 4, // F
         duration:3,
         color: "#6a994e",
         description: "Sprint planning for next week",
