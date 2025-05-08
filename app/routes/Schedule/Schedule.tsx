@@ -165,7 +165,7 @@ const Schedule = () => {
         title: "Seminario",
         startHour: 13.5,
         day: 4, // F
-        duration:3,
+        duration:5,
         color: "#6a994e",
         description: "Sprint planning for next week",
         classroom: "7"
