@@ -251,18 +251,18 @@ const Schedule = () => {
     //si el evento arrastrado y el evento de abajo es el mismo, retornamos 
     if (activeColumnId == overColumnId) return
 
-    setColums((columns)=>{
-      //encontramos los indices del arreglo del id activo y el id de abajo
-      const activeColumnIndex = columns.findIndex(
-        (col)=> col.id ===activeColumnId
-      )
+    // setColums((columns)=>{
+    //   //encontramos los indices del arreglo del id activo y el id de abajo
+    //   const activeColumnIndex = columns.findIndex(
+    //     (col)=> col.id ===activeColumnId
+    //   )
 
-      const overColumnIndex = columns.findIndex(
-        (col)=> col.id === overColumnId
-      )
-      //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
-      return arrayMove(columns,activeColumnIndex,overColumnIndex)
-    })
+    //   const overColumnIndex = columns.findIndex(
+    //     (col)=> col.id === overColumnId
+    //   )
+    //   //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
+    //   return arrayMove(columns,activeColumnIndex,overColumnIndex)
+    // })
   }
 
   function onDragOver(event:DragOverEvent){
