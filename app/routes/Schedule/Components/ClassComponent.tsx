@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { Class } from '../types/Class';
 import '../Schedule.css';
 import { MdDeleteForever } from "react-icons/md";
@@ -17,7 +17,7 @@ const ClassComponent = ({c,deleteClass,updateClass} : Props) => {
   const [editMode,setEditMode] = useState(false)
 
 
-
+  
   const {setNodeRef,attributes,listeners,transform,transition,isDragging} =useSortable({
       id: c.id,
       data:{
@@ -63,16 +63,26 @@ const ClassComponent = ({c,deleteClass,updateClass} : Props) => {
       </div>
     )
   }
-  
+  const getH= (hour:number)=>{
+    return hour % 1 !== 0 ? `${Math.floor(hour)}:30` : `${hour}:00`;
+  }
   return (
 
-    
-    <div className={`cell-box  ${c.isDefault!= true ? 'class-box':''}`} ref={setNodeRef} style={style}{...(c.isDefault!= true ? { ...attributes, ...listeners } : {})}onMouseEnter={()=>setMouseOver(true)} onMouseLeave={()=>setMouseOver(false)}>
+    <div className={`cell-box  ${c.isDefault!= true ? 'class-box ':''}`} ref={setNodeRef} style={style}{...(c.isDefault!= true ? { ...attributes, ...listeners } : {})}onMouseEnter={()=>setMouseOver(true)} onMouseLeave={()=>setMouseOver(false)}>
 
       {c.isDefault!= true? c.title:null} 
       {c.isDefault!= true ? mouseOver && (<button className='class-edit-btn' onClick={toggleEditMode}>< FaEdit className='text-lg'/></button>) :null }
 
       {c.isDefault!= true ?mouseOver && (<button className='class-delete-btn' onClick={()=>deleteClass(c.id)}><MdDeleteForever className='text-xl'/></button>):null  }
+      <div  className='font-normal'>
+        {/* {c.isDefault!= true? 'Hora de Inicio: '+ getH(c.startH  our) : null}  */}
+        <br />
+        {c.isDefault!= true?  c.description : null} 
+        
+      </div>
+
+
+      
     </div>
   )
 }

@@ -5,19 +5,26 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import {CSS} from "@dnd-kit/utilities"
 import type { Class } from '../types/Class';
 import ClassComponent from './ClassComponent';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { deleteExtraFalseRows } from '../scheduleUtils';
 interface Props{
     column:Column;
     deleteClass: (id:string | number) => void;
     updateClass: (id:string | number, title:string)=>void;
-
+    setClasses: React.Dispatch<React.SetStateAction<Class[]>>;
     classes : Class[];
 }
 
 
 const ColumnComponent = (props: Props) => {
-  const {column,classes,deleteClass,updateClass} = props
+  const {column,classes,deleteClass,updateClass,setClasses} = props
   
+
+  // useEffect(() => {
+  //   if (classes.length > 0 && classes.length === new Set(classes.map(c => c.id)).size) {
+  //     deleteExtraFalseRows(classes, setClasses);
+  //   }
+  // }, [classes]);
 
   const {setNodeRef,attributes,listeners,transform,transition,isDragging} =useSortable({
     id: column.id,

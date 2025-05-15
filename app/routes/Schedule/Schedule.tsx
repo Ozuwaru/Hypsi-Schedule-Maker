@@ -9,57 +9,15 @@ import {arrayMove, SortableContext} from '@dnd-kit/sortable'
 import { updateId, type Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
 import HourColumn from './Components/HourColumn'
+import { setDefaultClasses,deleteExtraFalseRows,loadRealSchedule,addExtraFalseRows } from './scheduleUtils'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
-    // {
-    //   id: "0",
-    //   title: "Team Meeting"
-    //   day: 0, // Monday
-    //   duration:1,
-    //   color: "#a7c957",
-    //   description: "Weekly team sync with department heads",
-    //   classroom: "7"
-    // },
-    // {
-    //   id: "2",
-    //   title: "Project Review",
-    //   day: 0, // Tuesday
-    //   duration:1,
-    //   color: "#a7c957",
-    //   description: "Review Q1 project milestones and deliverables",
-    //   classroom: "7"
-    // },
-    // {
-    //   id: "3",
-    //   title: "Client Call",
-    //   day: 1, // Wednesday
-    //   duration:1,
-    //   color: "#6a994e",
-    //   description: "Discuss new requirements with the client",
-    //   classroom: "7"
-    // },
-    // {
-    //   id: "4",
-    //   title: "Lunch Break",
-    //   day: 2, // Thursday
-    //   duration:2,
-
-    //   color: "#a7c957",
-    //   description: "Team lunch at the cafeteria",
-    //   classroom: "7"
-    // },
-    // {
-    //   id: "5",
-    //   title: "Planning",
-    //   day: 3, // Friday
-    //   duration:1,
-
-    //   color: "#6a994e",
-    //   description: "Sprint planning for next week",
-    //   classroom: "7"
-    // }
+    
   ])
+  const [firstMounted,SetMounted] = useState<Boolean>(false);
+  // const [addedFalseRows,setAdded] = useState(false)//me permite identificar si ya añadi las clases falsas al arreglo, en true, ya fueron aladidas, false no.
+  // const [deletedExtraFalseRows,setDeleted] = useState(false)//me permite identificar si ya borre las clases falsas extras del arreglo, en true fueron borradas y en false no.
   
   const [columns,setColums] = useState<Column[]>([
     {
@@ -83,111 +41,20 @@ const Schedule = () => {
       title: 'Viernes'
     },
   ])
+  
 
-  function setDefaultClasses(){
-    if(classes.length==0){  
-      let defaultArr = classes;
-      // por cada semana, agregamos 19 filas que son las horas disponibles de ese dia
-      for(let j=0;j<columns.length;j++){
-        for(let i=0; i<19;i++){
-            let defaultC: Class = {
-              id: j+'-'+i,
-              title: 'test'+i+'-'+j,
-              day: j,
-              duration: 1,
-              classroom: '3T1',
-              isDefault:true
-            }
-            // defaultC.id=i;
-            // defaultC.day=j;
-            defaultArr.push(defaultC);
-        }
+
+  setDefaultClasses(classes,columns,setClasses,SetMounted);
+  useEffect(() => {
+    if (firstMounted) {
+      SetMounted(false);
+      for (let index = 0; index < columns.length; index++) {
+        deleteExtraFalseRows(classes,index,setClasses);
+        
       }
-      setClasses(defaultArr);
-      loadRealSchedule();
     }
-  }
-  setDefaultClasses()
+  })
 
-
-
-  function loadRealSchedule(){
-    //aqui vamos a cargar las clases de la semana actual desde el server, por ahora carga las ficticias
-    let fakeClasses:Class[] = [
-      {
-        title: "Matematica",
-        startHour: 8,
-        day: 0, // Monday
-        duration:1,
-        color: "#a7c957",
-        description: "Weekly team sync with department heads",
-        classroom: "7"
-      },
-      
-       {
-         title: "Programacion III",
-         day: 0, // Tuesday
-         startHour: 9,
-         duration:4,
-         color: "#a7c957",
-         description: "Review Q1 project milestones and deliverables",
-         classroom: "7"
-       },
-       {
-        title: "Investigacion de Operaciones",
-        day: 1, // Wednesday
-        startHour: 8,
-
-        duration:3,
-        color: "#6a994e",
-        description: "Discuss new requirements with the client",
-        classroom: "7"
-      },
-      {
-        title: "Ingenieria de software",
-        day: 2, // Thursday
-        startHour: 8,
-
-        duration:2,
-        color: "#a7c957",
-        description: "Team lunch at the cafeteria",
-        classroom: "7"
-      },
-      {
-        title: "Bases de datos",
-        startHour: 10.5,
-        day: 3, // F
-        duration:3,
-        color: "#6a994e",
-        description: "Sprint planning for next week",
-        classroom: "7"
-      },{
-        title: "Seminario",
-        startHour: 13.5,
-        day: 4, // F
-        duration:5,
-        color: "#6a994e",
-        description: "Sprint planning for next week",
-        classroom: "7"
-      }
-    ]
-    //guardamos la respectiva id segun la hora
-    fakeClasses.forEach(c => {
-      c.id = c.day+'-'+updateId(c);
-      setClasses((prevoiusC)=>
-        prevoiusC.map((clase)=>
-          clase.id === c.id ? c : clase//remplazamos el objeto por el nuevo si tienen el mismo id
-        ).concat(prevoiusC.every((item)=>item.id !== c.id)? [c] : [])
-        // const classesActualizadas = prevoiusC.filter((clase)=>clase.id != c.id);
-        // return [...classesActualizadas,c];
-      )
-    });
-    
-
-
-
-    console.log(classes)
-  }
 
 
   //similar al use effect, actualiza el valor del arreglo segun el valor deñ arreglo columnas
@@ -220,7 +87,7 @@ const Schedule = () => {
             <SortableContext items={columnsId}>
 
               {columns.map(col=>
-                <ColumnComponent  key={col.id} column={col} deleteClass={deleteClass} updateClass={updateClass} classes={classes.filter((c) => c.day === col.id)} />
+                <ColumnComponent  key={col.id} column={col} deleteClass={deleteClass} updateClass={updateClass} setClasses={setClasses} classes={classes.filter((c) => c.day === col.id)} />
               )}
             </SortableContext>
           </div>
@@ -258,9 +125,14 @@ const Schedule = () => {
     //id de la columna de abajo del evento
     const overColumnId = over.id
     //si el evento arrastrado y el evento de abajo es el mismo, retornamos 
+    
+    console.log(active)
+    console.log(over)
+    deleteExtraFalseRows(classes,active.data.current.c.day,setClasses);
+    // addExtraFalseRows(classes,active.data.current.c.day,setClasses);
     if (activeColumnId == overColumnId) return
 
-    // setColums((columns)=>{
+    // setColums((columns)=>f{
     //   //encontramos los indices del arreglo del id activo y el id de abajo
     //   const activeColumnIndex = columns.findIndex(
     //     (col)=> col.id ===activeColumnId
@@ -336,6 +208,7 @@ const Schedule = () => {
     setClasses(newClasses)
   }
   function updateClass(id:string | number, title:string){
+
     const newClasses = classes.map(c=>{
       if(c.id!=id){
         return c
@@ -350,7 +223,7 @@ const Schedule = () => {
     if (typeof window !=='undefined'){
       return createPortal(
       <DragOverlay>
-        {activeColumn && <ColumnComponent deleteClass={deleteClass} updateClass={updateClass} classes={[]} /*createClass={createClass}*/ column={activeColumn}>
+        {activeColumn && <ColumnComponent setClasses={setClasses} deleteClass={deleteClass} updateClass={updateClass} classes={[]} /*createClass={createClass}*/ column={activeColumn}>
         </ColumnComponent>}
         {activeClass && <ClassComponent c={activeClass} deleteClass={deleteClass} updateClass={updateClass}></ClassComponent>}
 
@@ -358,13 +231,6 @@ const Schedule = () => {
     ,document.body)}
     
   }
-
-  // function createClass(columnId: string | number){ 
-  //   const newClass: Class = {
-  //     id:classes.length
-      
-  //   }
-
   
 }
 
