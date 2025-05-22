@@ -9,7 +9,7 @@ import {arrayMove, SortableContext} from '@dnd-kit/sortable'
 import { updateId, type Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
 import HourColumn from './Components/HourColumn'
-import { setDefaultClasses,deleteExtraFalseRows,loadRealSchedule,addExtraFalseRows } from './scheduleUtils'
+import { setDefaultClasses,deleteExtraFalseRows, updateClassesOnMove, addExtraFalseRows } from './scheduleUtils'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
@@ -126,9 +126,9 @@ const Schedule = () => {
     const overColumnId = over.id
     //si el evento arrastrado y el evento de abajo es el mismo, retornamos 
     
-    console.log(active)
-    console.log(over)
-    deleteExtraFalseRows(classes,active.data.current.c.day,setClasses);
+    // console.log(active)
+    // console.log(over)
+    // deleteExtraFalseRows(classes,active.data.current.c.day,setClasses);
     // addExtraFalseRows(classes,active.data.current.c.day,setClasses);
     if (activeColumnId == overColumnId) return
 
@@ -165,24 +165,29 @@ const Schedule = () => {
     if (!isActiveClass) return;
 
     if (isActiveClass && isOverClass){
-      setClasses((classes)=>{
-        //encontramos los indices del arreglo del id activo y el id de abajo
-        const activeClassIndex = classes.findIndex(
-          (c)=> c.id ===activeClassId
-        )
+      // setClasses((classes)=>{
+      //   //encontramos los indices del arreglo del id activo y el id de abajo
+      //   const activeClassIndex = classes.findIndex(
+      //     (c)=> c.id ===activeClassId
+      //   )
   
-        const overClassIndex = classes.findIndex(
-          (col)=> col.id === overClassId
-        )
+      //   const overClassIndex = classes.findIndex(
+      //     (col)=> col.id === overClassId
+      //   )
 
-        if(classes[activeClassIndex].day!== classes[overClassIndex].day){
-          classes[activeClassIndex].day= classes[overClassIndex].day
-        }
+      //   if(classes[activeClassIndex].day!== classes[overClassIndex].day){
+      //     classes[activeClassIndex].day= classes[overClassIndex].day
+      //   }
 
 
-        //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
-        return arrayMove(classes,activeClassIndex,overClassIndex)
-      })
+      //   //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
+      //   return arrayMove(classes,activeClassIndex,overClassIndex)
+      // })
+      console.log(active)
+      console.log(over)
+
+      updateClassesOnMove(active.data.current.c.day,setClasses,activeClassId,overClassId);
+      addExtraFalseRows(classes,active.id,setClasses);
     }
 
     const isOverColumn = over.data.current?.type ==="Column";

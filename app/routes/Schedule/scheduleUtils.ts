@@ -1,6 +1,7 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import  {type Class,updateId } from "./types/Class";
 import type { Column} from "./types/Column";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export function setDefaultClasses(
     classes : Class[],
@@ -38,15 +39,7 @@ export  function loadRealSchedule(
     setClasses: React.Dispatch<React.SetStateAction<Class[]>>
   ){
    let realClasses:Class[] = [
-    {
-      title: "Matematica",
-      startHour: 8,
-      day: 0, // Monday
-      duration:1,
-      color: "#a7c957",
-      description: "Weekly team sync with department heads",
-      classroom: "7"
-    },
+
     {
       title: "Programacion III",
       day: 0, // Tuesday
@@ -161,7 +154,7 @@ export function deleteExtraFalseRows(
       realDuration+=classesOfOneDay[j].duration-1;
     }
   }
-  console.log(classesOfOneDay.length+realDuration,classesOfOneDay)
+  // console.log(classesOfOneDay.length+realDuration,classesOfOneDay)
 
   if(classesOfOneDay.length+realDuration >19){
     let i=0;
@@ -171,14 +164,14 @@ export function deleteExtraFalseRows(
         realDuration--;
       }
       i++;
-      console.log('bucle while')
+      // console.log('bucle while')
       // classesOfOneDay[19-i]
     }
   }
   setClasses((prevClasses) => 
     prevClasses.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay)
   );
-  console.log('borrando')
+  // console.log('borrando')
   // console.log(classesOfOneDay)
 
 }
@@ -235,4 +228,70 @@ export function addExtraFalseRows(
    );
    console.log('borrando')
    // console.log(classesOfOneDay)
+}
+
+
+export function updateClassesOnMove(
+  columnID: Number,
+  setClasses: React.Dispatch<React.SetStateAction<Class[]>>,
+  activeClassId,
+  overClassId
+){
+  
+  let id = columnID.toLocaleString();
+  id=id.split('-')[0];
+  // console.log(id);
+
+  setClasses((classes)=>{
+    //encontramos los indices del arreglo del id activo y el id de abajo
+    const activeClassIndex = classes.findIndex(
+      (c)=> c.id ===activeClassId
+    );
+  
+    const overClassIndex = classes.findIndex(
+      (col)=> col.id === overClassId
+    );
+  
+    if(classes[activeClassIndex].day!== classes[overClassIndex].day){
+      classes[activeClassIndex].day= classes[overClassIndex].day
+    };
+    
+
+
+    var realDuration =0;
+  
+    const classesOfOneDay = classes.filter((c)=>c.day ==Number(id));
+    // console.log(classesOfOneDay)
+
+    //calculamos la cantidad de horas reales
+    for (let j = 0; j < classesOfOneDay.length; j++) {
+      //si la clase actual es real, borramos clases falsas ce la misma duracion-1 desde el final 
+      // console.log(classesOfOneDay[j]);
+      if(classesOfOneDay[j].isDefault == false){
+        //como la clase actual no es default, es una clase real, por lo tanto, obtenemos la duracion
+        realDuration+=classesOfOneDay[j].duration-1;
+      }
+    }
+    // console.log(realDuration,classesOfOneDay)
+
+    if(classesOfOneDay.length+realDuration >19){
+      let i=0;
+      while(classesOfOneDay.length+realDuration >19){
+        if(classesOfOneDay[classesOfOneDay.length-1-i].isDefault){
+           classesOfOneDay.splice( classesOfOneDay.length-1-i,1);
+        }
+        i++;
+        // console.log('bucle while')
+        // classesOfOneDay[19-i]
+      }
+    }
+
+    classes = classes.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay);
+    
+
+    // console.log(classesOfOneDay);
+    //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
+
+    return arrayMove(classes,activeClassIndex,overClassIndex)
+  })
 }
