@@ -9,7 +9,7 @@ import {arrayMove, SortableContext} from '@dnd-kit/sortable'
 import { updateId, type Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
 import HourColumn from './Components/HourColumn'
-import { setDefaultClasses,deleteExtraFalseRows, updateClassesOnMove, addExtraFalseRows } from './scheduleUtils'
+import { setDefaultClasses,deleteExtraFalseRows, updateClassesOnMove, addExtraFalseRows, addGivenFalseRows } from './scheduleUtils'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
@@ -131,9 +131,9 @@ const Schedule = () => {
     // deleteExtraFalseRows(classes,active.data.current.c.day,setClasses);
     // addExtraFalseRows(classes,active.data.current.c.day,setClasses);
     if (activeColumnId == overColumnId) return
-
-    // setColums((columns)=>f{
-    //   //encontramos los indices del arreglo del id activo y el id de abajo
+    
+    // setColums((columns)=>{
+    //   //encontramos los indies del arreglo del id activo y el id de abajo
     //   const activeColumnIndex = columns.findIndex(
     //     (col)=> col.id ===activeColumnId
     //   )
@@ -146,7 +146,7 @@ const Schedule = () => {
     // })
   }
 
-  function onDragOver(event:DragOverEvent){
+  async function onDragOver(event:DragOverEvent){
     const {active,over}= event
     //si no esta encima de otra columna, lo devolvemos
     if(!over){
@@ -182,12 +182,21 @@ const Schedule = () => {
 
       //   //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
       //   return arrayMove(classes,activeClassIndex,overClassIndex)
-      // })
-      console.log(active)
-      console.log(over)
+      // })   
+      // console.log(active)
+      // console.log(over)
 
+      // if(active.data.current.c.day!=over.data.current.c.day){
+      //   console.log('agregando falsas');
+      //   // console.log(active.data.current.c.day);
+      //   addGivenFalseRows(active.data.current.c.day,setClasses,active.data.current.c.duration,classes.length);
+        
+      // }
+      
       updateClassesOnMove(active.data.current.c.day,setClasses,activeClassId,overClassId);
-      addExtraFalseRows(classes,active.id,setClasses);
+      // arrayMove(classes,active.data.current.c.day,over.data.current.c.day);
+
+
     }
 
     const isOverColumn = over.data.current?.type ==="Column";

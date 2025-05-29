@@ -125,7 +125,7 @@ export  function loadRealSchedule(
 
 
 export function deleteExtraFalseRows(
-    classes: Class[],
+  classes: Class[],
   columnID: Number,
   setClasses: React.Dispatch<React.SetStateAction<Class[]>>
 ) {
@@ -182,32 +182,26 @@ export function addExtraFalseRows(
   columnID: UniqueIdentifier,
   setClasses: React.Dispatch<React.SetStateAction<Class[]>>
 ){
+
    // console.log(columnID);
    let id = columnID.toLocaleString();
    id=id.split('-')[0];
    console.log(id);
  
-   //basado en la duracion de las clases reales, necesitamos eliminar clases falsas de cada dia, asi evito que hayan clases extra
-   //luego de cada evento de arrastre, hay que verificar si hay menos clases falsas de las que deberia para añadirlas
-   // console.log(classes)
-   // //bucle for para cada columna, es decir cada dia
-   // for (let index = 0; index < columns.length; index++) {
- 
    var realDuration =0;
    
    const classesOfOneDay = classes.filter((c)=>c.day ==Number(id));
-   // console.log(classesOfOneDay)
+   console.log(classesOfOneDay)
  
    //calculamos la cantidad de horas reales
    for (let j = 0; j < classesOfOneDay.length; j++) {
-     //si la clase actual es real, borramos clases falsas ce la misma duracion-1 desde el final 
-     // console.log(classesOfOneDay[j]);
      if(classesOfOneDay[j].isDefault == false){
        //como la clase actual no es default, es una clase real, por lo tanto, obtenemos la duracion
        realDuration+=classesOfOneDay[j].duration-1;
      }
    }
-  //  console.log(classesOfOneDay.length+realDuration,classesOfOneDay)
+   console.log('horas totales de la columna',classesOfOneDay.length+realDuration)
+   
    let faltantes = 19-realDuration-classesOfOneDay.length;
    if(classesOfOneDay.length+realDuration <19){
      for (let index = 1; index <= faltantes; index++) {
@@ -225,9 +219,11 @@ export function addExtraFalseRows(
     }
    setClasses((prevClasses) => 
      prevClasses.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay)
+
+   
    );
-   console.log('borrando')
-   // console.log(classesOfOneDay)
+  //  console.log('borrando')
+  //  // console.log(classesOfOneDay)
 }
 
 
@@ -241,8 +237,9 @@ export function updateClassesOnMove(
   let id = columnID.toLocaleString();
   id=id.split('-')[0];
   // console.log(id);
-
+  
   setClasses((classes)=>{
+
     //encontramos los indices del arreglo del id activo y el id de abajo
     const activeClassIndex = classes.findIndex(
       (c)=> c.id ===activeClassId
@@ -253,7 +250,10 @@ export function updateClassesOnMove(
     );
   
     if(classes[activeClassIndex].day!== classes[overClassIndex].day){
+      //actualizamos el dia de la clase que estamos modificando
       classes[activeClassIndex].day= classes[overClassIndex].day
+      
+      
     };
     
 
@@ -261,7 +261,7 @@ export function updateClassesOnMove(
     var realDuration =0;
   
     const classesOfOneDay = classes.filter((c)=>c.day ==Number(id));
-    // console.log(classesOfOneDay)
+    // // console.log(classesOfOneDay)
 
     //calculamos la cantidad de horas reales
     for (let j = 0; j < classesOfOneDay.length; j++) {
@@ -288,10 +288,20 @@ export function updateClassesOnMove(
 
     classes = classes.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay);
     
-
     // console.log(classesOfOneDay);
     //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
-
+    
     return arrayMove(classes,activeClassIndex,overClassIndex)
-  })
+  });
+  
 }
+
+
+
+  export function addGivenFalseRows(
+  columnID: Number,
+  setClasses: React.Dispatch<React.SetStateAction<Class[]>>,
+  numerOfClasses: Number
+  ){
+    
+  }
