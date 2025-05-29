@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import  {type Class,updateId } from "./types/Class";
+import  {type Class,parseHourToNumber,updateId } from "./types/Class";
 import type { Column} from "./types/Column";
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -38,6 +38,7 @@ export function setDefaultClasses(
 export  function loadRealSchedule(
     setClasses: React.Dispatch<React.SetStateAction<Class[]>>
   ){
+    //aqui podemos hacer la peticion al server de las clases
    let realClasses:Class[] = [
 
     {
@@ -100,6 +101,8 @@ export  function loadRealSchedule(
     //guardamos la respectiva id segun la hora
     realClasses.forEach(c => {
       //preparamos el id de la clase real
+      c.startHour =parseHourToNumber(c.startHour);
+
       c.id = c.day+'-'+updateId(c);
       c.isDefault=false;
       setClasses((prevoiusC)=>
@@ -186,7 +189,7 @@ export function addExtraFalseRows(
    // console.log(columnID);
    let id = columnID.toLocaleString();
    id=id.split('-')[0];
-   console.log(id);
+   console.log(classes);
  
    var realDuration =0;
    
@@ -270,6 +273,7 @@ export function updateClassesOnMove(
       if(classesOfOneDay[j].isDefault == false){
         //como la clase actual no es default, es una clase real, por lo tanto, obtenemos la duracion
         realDuration+=classesOfOneDay[j].duration-1;
+        classesOfOneDay[j].startHour= (j/2)+8; 
       }
     }
     // console.log(realDuration,classesOfOneDay)
@@ -285,23 +289,26 @@ export function updateClassesOnMove(
         // classesOfOneDay[19-i]
       }
     }
-
-    classes = classes.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay);
+    console.log(classes);
+    return  classes.filter((clase) => clase.day !== Number(id)).concat(classesOfOneDay);
     
     // console.log(classesOfOneDay);
     //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
     
-    return arrayMove(classes,activeClassIndex,overClassIndex)
+    // return arrayMove(classes,activeClassIndex,overClassIndex)
   });
   
 }
 
 
 
-  export function addGivenFalseRows(
-  columnID: Number,
-  setClasses: React.Dispatch<React.SetStateAction<Class[]>>,
-  numerOfClasses: Number
+  export function getRealClasses(
+    classes: Class[],
+
   ){
+    let realClasses: Class [] = [];
+    realClasses = classes.filter(c => c.isDefault === false);
+
+    console.log(realClasses);
     
   }

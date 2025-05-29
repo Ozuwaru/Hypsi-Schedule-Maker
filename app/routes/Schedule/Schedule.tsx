@@ -9,7 +9,7 @@ import {arrayMove, SortableContext} from '@dnd-kit/sortable'
 import { updateId, type Class } from './types/Class'
 import ClassComponent from './Components/ClassComponent'
 import HourColumn from './Components/HourColumn'
-import { setDefaultClasses,deleteExtraFalseRows, updateClassesOnMove, addExtraFalseRows, addGivenFalseRows } from './scheduleUtils'
+import { setDefaultClasses,deleteExtraFalseRows, updateClassesOnMove, addExtraFalseRows, getRealClasses } from './scheduleUtils'
 const Schedule = () => {
 
   const [classes,setClasses] = useState<Class[]>([
@@ -43,8 +43,8 @@ const Schedule = () => {
   ])
   
 
-
   setDefaultClasses(classes,columns,setClasses,SetMounted);
+  getRealClasses(classes);
   useEffect(() => {
     if (firstMounted) {
       SetMounted(false);
@@ -107,6 +107,7 @@ const Schedule = () => {
   function OnDragStart(event:DragStartEvent){
     
     //verificamos que al arrastrar, el tipo de dato sea la columna
+
     if (event.active.data.current?.type =="Class" ){
       setActiveClass(event.active.data.current.c)
       return;
@@ -130,8 +131,11 @@ const Schedule = () => {
     // console.log(over)
     // deleteExtraFalseRows(classes,active.data.current.c.day,setClasses);
     // addExtraFalseRows(classes,active.data.current.c.day,setClasses);
-    if (activeColumnId == overColumnId) return
+    const activeClassId = active.id
+    //id de la Classa de abajo del evento
+    const overClassId = over.id
     
+    if (activeColumnId == overColumnId) return
     // setColums((columns)=>{
     //   //encontramos los indies del arreglo del id activo y el id de abajo
     //   const activeColumnIndex = columns.findIndex(
@@ -165,35 +169,40 @@ const Schedule = () => {
     if (!isActiveClass) return;
 
     if (isActiveClass && isOverClass){
-      // setClasses((classes)=>{
-      //   //encontramos los indices del arreglo del id activo y el id de abajo
-      //   const activeClassIndex = classes.findIndex(
-      //     (c)=> c.id ===activeClassId
-      //   )
+      setClasses((classes)=>{
+        //encontramos los indices del arreglo del id activo y el id de abajo
+        const activeClassIndex = classes.findIndex(
+          (c)=> c.id ===activeClassId
+        )
   
-      //   const overClassIndex = classes.findIndex(
-      //     (col)=> col.id === overClassId
-      //   )
+        const overClassIndex = classes.findIndex(
+          (col)=> col.id === overClassId
+        )
 
-      //   if(classes[activeClassIndex].day!== classes[overClassIndex].day){
-      //     classes[activeClassIndex].day= classes[overClassIndex].day
-      //   }
+        if(classes[activeClassIndex].day!== classes[overClassIndex].day){
+          console.log('agregando falsas');
+          // console.log(active.data.current.c.day);
+          
+          classes[activeClassIndex].day= classes[overClassIndex].day
+        }
 
 
-      //   //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
-      //   return arrayMove(classes,activeClassIndex,overClassIndex)
-      // })   
+        //funcion de dnd kit, actualiza el arreglo de los eventos segun la posicion de arrastre
+        return arrayMove(classes,activeClassIndex,overClassIndex)
+        
+      })   
+      // addExtraFalseRows(classes,active.data.current.c.day,setClasses);
+
+      updateClassesOnMove(active.data.current.c.day,setClasses,activeClassId,overClassId);
+
+      // if(active.data.current.c.day!=over.data.current.c.day){
+        
+      // }
+
       // console.log(active)
       // console.log(over)
 
-      // if(active.data.current.c.day!=over.data.current.c.day){
-      //   console.log('agregando falsas');
-      //   // console.log(active.data.current.c.day);
-      //   addGivenFalseRows(active.data.current.c.day,setClasses,active.data.current.c.duration,classes.length);
-        
-      // }
       
-      updateClassesOnMove(active.data.current.c.day,setClasses,activeClassId,overClassId);
       // arrayMove(classes,active.data.current.c.day,over.data.current.c.day);
 
 
